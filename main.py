@@ -1,7 +1,7 @@
 # 애플리케이션 구현에 필요한 라이브러리 추가
 # ch 4.2.1 main.py
 import sys
-from PyQt5.QtWidgets import (QApplication, QWidget, QPushButton, QVBoxLayout, QMessageBox)   # 애플리케이션 핸들러와 빈 GUI 위젯
+from PyQt5.QtWidgets import (QApplication, QWidget, QPushButton, QVBoxLayout, QMessageBox,QPlainTextEdit)   # 애플리케이션 핸들러와 빈 GUI 위젯
 from PyQt5.QtGui import QIcon # icon을 추가하기 위한 라이브러리
 
 class Calculator(QWidget):  # Qwidget 클래스를 상속받아서 클래스를 정의
@@ -11,10 +11,14 @@ class Calculator(QWidget):  # Qwidget 클래스를 상속받아서 클래스를 
         self.initUI()   # 나머지 초기화는 initUI 함수에 정의
 
     def initUI(self):
+        self.te1 = QPlainTextEdit() # 텍스트 에디트 위젯 생성
+        self.te1.setReadOnly(True) # 텍스트 에디트 위젯을 읽기만 가능하도록 수정
+
         self.btn1=QPushButton('Message',self) # 버튼 추가
         self.btn1.clicked.connect(self.activateMessage) # 버튼 클릭 시 핸들러 함수 연결
 
         vbox=QVBoxLayout() # 수직 레이아웃 위젯 생성
+        vbox.addWidget(self.te1) # 수직 레이아웃에 텍스트 에디트 위젯 추가
         vbox.addStretch(1) # 빈 공간
         vbox.addWidget(self.btn1) # 버튼 위치
         vbox.addStretch(1) # 빈 공간
@@ -26,8 +30,9 @@ class Calculator(QWidget):  # Qwidget 클래스를 상속받아서 클래스를 
         self.resize(256,256)
         self.show()
 
-    def activateMessage(self): # 버튼을 클릭할 때 동작하는 함수: 메시지 박스 출력
-        QMessageBox.information(self,"information","Button clicked")
+    def activateMessage(self): # 핸들러 함수 수정: 메시지가 텍스트 에디트에 출력되도록
+            #QMessageBox.information(self,"information","Button clicked")
+            self.te1.appendPlainText("Button clicked!")
 
 if __name__=='__main__':    # pyqt는 애플리케이션 당 1개의 QApplication이 필요함
     app = QApplication(sys.argv)    # QApplication 인스턴스 생성
